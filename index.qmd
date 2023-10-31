@@ -1,11 +1,25 @@
 ---
-title: "project1"
+title: "Christiana Liu"
+image: WechatIMG754.jpeg
+toc: false
+about: 
+  template: trestles
+  image-shape: rectangle
+  image-width: 14em
 ---
 
-This is a Quarto website.
+### **About Myself**
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+My name is Yijia (Christiana) Liu. I am excited to meet you.
 
-```{r}
-1 + 1 + 1
-```
+### **Education**
+
+**MHS in Genetic Epidemiology** (2023-2024)\| Johns Hopkins University
+
+**BA in Cognitive Science and Public Health Studies** (2020-2023)\| Johns Hopkins University
+
+### **Experience**
+
+**Research Assistant** (2023-present)\| Wendy Klag Center for Autism and Developmental Disabilities
+
+**Research Data Analyst** (2023-present)\| Johns Hopkins Adherence Research Center
