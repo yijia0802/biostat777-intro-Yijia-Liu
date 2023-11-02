@@ -3,23 +3,15 @@ title: "Christiana Liu"
 image: WechatIMG754.jpeg
 toc: false
 about: 
-  template: trestles
-  image-shape: rectangle
+  template: jolla
   image-width: 14em
+  links:
+    - text: LinkedIn
+      href: https://www.linkedin.com/in/christiana-yijia-liu-b6459319a/
+    - text: GitHub
+      href: https://github.com/yijia0802
+    - text: Email
+      href: mailto:yliu401@jhmi.edu
 ---
 
-### **About Myself**
-
-My name is Yijia (Christiana) Liu. I am excited to meet you.
-
-### **Education**
-
-**MHS in Genetic Epidemiology** (2023-2024)\| Johns Hopkins University
-
-**BA in Cognitive Science and Public Health Studies** (2020-2023)\| Johns Hopkins University
-
-### **Experience**
-
-**Research Assistant** (2023-present)\| Wendy Klag Center for Autism and Developmental Disabilities
-
-**Research Data Analyst** (2023-present)\| Johns Hopkins Adherence Research Center
+Hello, my name is Yijia (Christiana) Liu. I am a genetic epidemiology student at Johns Hopkins Bloomberg School of Public Health. My research interests are in genetics and Autism Spectrum Disorder. I am excited to meet you. In my free time, I like playing the cello, piano, making music and skiing.
