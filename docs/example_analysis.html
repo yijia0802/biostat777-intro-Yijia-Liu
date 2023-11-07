@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>project1 - Example Analysis</title>
+<title>Christiana Liu - Example Analysis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -127,7 +127,7 @@ div.csl-indent {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">project1</span>
+    <span class="navbar-title">Christiana Liu</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -260,7 +260,8 @@ Note
 </section>
 <section id="analysis-plan" class="level3">
 <h3 class="anchored" data-anchor-id="analysis-plan">Analysis Plan</h3>
-<p>We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers.</p>
+<p>We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers. All analysis are performed in R language.</p>
+<p>We first load all packages.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr) </span>
@@ -282,6 +283,7 @@ Note
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggpubr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We clean and recode the survey data.</p>
 <div class="cell" data-show_col_types="false">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"2019-2020 NSCH_Topical_CAHMI_DRC_cleaned.csv"</span>,<span class="at">na =</span> <span class="fu">c</span>(<span class="st">"99"</span>,<span class="st">"95"</span>))</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
