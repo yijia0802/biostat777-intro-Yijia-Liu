@@ -33,7 +33,7 @@ Note that although the total sample size of NSCH is 72,210, we took the samples 
 
 ### Analysis Plan
 
-We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers. All analysis are performed in R language. 
+We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers. All analysis are performed in R language.
 
 We first load all packages.
 
@@ -467,5 +467,6 @@ From the *ggplot2* package, I used:
 5.  goem_violin()
 6.  geom_segment()
 7.  geom_boxplot()
+8.  facet_wrap()
 
 # References
