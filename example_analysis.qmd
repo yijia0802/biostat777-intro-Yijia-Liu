@@ -1,12 +1,13 @@
 ---
 title: "Example Analysis"
+bibliography: reference1.bib
 ---
 
 ## Introduction
 
 ### Question of Interest
 
-Autism Spectrum Disorder (ASD) is a developmental disability in the human brain. Some people with ASD have a known cause, such as genetics, others cause still remain unknown. ASD begins before the age of 3 and would last throughout one's life. According to CDC, 1 of 44 children has autism (CDC, 2022). Children with ASD may have difficulties developing and maintaining friendships, communicating with peers and adults, or understanding what behaviors are expected in school or on the job as they grow up. In this report, we are interested to look at some potential factors that are associated with autism in children (0-17years).
+Autism Spectrum Disorder (ASD) is a developmental disability in the human brain. Some people with ASD have a known cause, such as genetics, others cause still remain unknown. ASD begins before the age of 3 and would last throughout one's life. According to CDC, 1 of 44 children has autism. Children with ASD may have difficulties developing and maintaining friendships, communicating with peers and adults, or understanding what behaviors are expected in school or on the job as they grow up [@control_signs_2022]. In this report, we are interested to look at some potential factors that are associated with autism in children (0-17years).
 
 ### Intended Audience
 
@@ -14,7 +15,11 @@ Epidemiologists, neuroscientists, researchers, physicians, families of ASD child
 
 ### Data
 
-We used the 2019-2020 combined NSCH (National Survey of Children's Health) from DRC (Data Resource Center) of CAHMI (Child and Adolescent Health Measurement Initiative) of Bloomberg School of Public Health to explore some variables that are potentially associated with autism. There were originally 800+ variables/survey questions in the dataset. We cleaned the dataset according to the literature review and our interest in 45 variables, and the total sample size is 72,210. Link to the dataset: https://www.childhealthdata.org/learn-about-the-nsch/NSCH
+We used the 2019-2020 combined NSCH (National Survey of Children's Health) from DRC (Data Resource Center) of CAHMI (Child and Adolescent Health Measurement Initiative) of Bloomberg School of Public Health to explore some variables that are potentially associated with autism. There were originally 800+ variables/survey questions in the dataset. We cleaned the dataset according to the literature review and our interest in 45 variables, and the total sample size is 72,210. Link to the dataset: <https://www.childhealthdata.org/learn-about-the-nsch/NSCH> Link to data dictionary: <https://www.census.gov/data-tools/demo/uccb/nschdict>
+
+::: callout-note
+Note that although the total sample size of NSCH is 72,210, we took the samples with ASD, which results in a total sample size of 2136.
+:::
 
 ### Directed Acyclic Graph
 
@@ -28,9 +33,11 @@ We used the 2019-2020 combined NSCH (National Survey of Children's Health) from 
 
 ### Analysis Plan
 
-We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers.
+We will be performing logistic regression analysis to test the variables that are associated with autism. We will also conduct logistic regression with interaction terms to test potential effect modifiers. All analysis are performed in R language. 
 
-```{r libraries, include=FALSE}
+We first load all packages.
+
+```{r libraries, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(knitr) 
 library(ggpubr)
@@ -52,7 +59,9 @@ library(hrbrthemes)
 library(ggpubr)
 ```
 
-```{r data recode, include=FALSE, show_col_types = FALSE}
+We clean and recode the survey data.
+
+```{r data recode, show_col_types = FALSE}
 data <- read.csv(file = "2019-2020 NSCH_Topical_CAHMI_DRC_cleaned.csv",na = c("99","95"))
 
 data_recode <-
@@ -120,13 +129,14 @@ data_recode <-
   data_recode %>%
    mutate(agegroup)
 ```
+
 ## Data Display on Demographics
 
 ### Race
 
 We are first presenting some data displays on some of the demographic variables in the dataset.
 
-```{r demographics: race, echo=FALSE}
+```{r demographics: race}
 #race table 
 
 my_table3 <- data_recode %>%
@@ -135,7 +145,7 @@ my_table3 <- data_recode %>%
   mutate(percent =round(n/sum(n)*100,1)) %>%
   filter(autism == "Yes")
 
-main.title <- "Prevalence of Autism Aross Race"
+main.title <- "Prevalence of Autism Across Race"
 tbody.style = tbody_style(color = "black", fill = c("#e8f3de", "#d3e8bb"), hjust=1, x=0.9)
 table <- ggtexttable(my_table3, rows = NULL,theme = ttheme(colnames.style = colnames_style(color = "white", fill = "#8cc257"),tbody.style = tbody.style))
 table %>%
@@ -147,7 +157,7 @@ The first demographic variable we look at is race. Race is a nominal variable wi
 
 ### Sex
 
-```{r demographics: sex, echo=FALSE}
+```{r demographics: sex}
 my_table7 <- data_recode %>%
   count(sex, autism) %>%
   group_by(sex) %>%
@@ -163,7 +173,7 @@ p7 <- my_table7 %>%
           scale_fill_manual("autism", values = c("Yes" = "mistyrose2")) +
           theme(panel.background = element_blank()) +
           theme(axis.line = element_line(colour = "grey")) +
-          labs(y = "Prevalence rate of Autism (%)", x = "Sex", title = "Prevalence of Autism", subtitle = "with regard to children's sex") +
+          labs(y = "Prevalence rate of Autism (%)", x = "Sex", title = "Prevalence of Autism", subtitle = "with regard to children's sex", caption = "Data source: 2019-2020 combined NSCH") +
           geom_text(aes(x = sex, y = percent, label = percent), size = 2.5, vjust = 1.8, color = "lightsteelblue4")
           
 p7
@@ -173,7 +183,8 @@ p7
 The second demographic variable we look at is sex. Sex is a nominal variable with two categories: male and female. Male has a three times higher prevalence of cancer (4.5%) comparing to female (1.3%).Thus, we are going to further investigate this variable.
 
 ### Children's Age
-```{r demographics: age of children, echo=FALSE}
+
+```{r demographics: age of children}
 
 #age 
 my_table8 <- data_recode %>%
@@ -188,7 +199,7 @@ p8 <- my_table8 %>%
   geom_point( size=5, color="darkseagreen3", fill=alpha("darkseagreen2", 0.3), alpha=0.7, shape=21, stroke=2)+
   theme(panel.background = element_blank()) +
   theme(axis.line = element_line(colour = "grey")) +
-  labs(y = "Prevalence rate of Autism (%)", x = "Age", title = "Prevalence of Autism", subtitle = "with regard to children's age") +
+  labs(y = "Prevalence rate of Autism (%)", x = "Age", title = "Prevalence of Autism", subtitle = "with regard to children's age", caption = "Data source: 2019-2020 combined NSCH") +
   geom_text(aes(x = age, y = percent, label = percent), size = 2.5, vjust = -1.8, colour = "lightsteelblue4") +
   ylim(0,4.5)
 
@@ -199,14 +210,14 @@ The third variable we look at the children's age when diagnosed with autism. Age
 
 ### Parents' Age
 
-```{r demographics: age of parents, echo=FALSE}
+```{r demographics: age of parents}
 
 p4 <- data_recode %>% 
         select(autism, parent1age) %>%
         drop_na() %>%
         ggplot(aes(x = autism, y = parent1age)) +
         geom_violin(trim = FALSE, fill = "linen", color = "lightskyblue3") + 
-        labs(title = "Prevalence of Autism", subtitle = "with regard to parent1's age", x = "Autism", y = "Age of Parent 1") +
+        labs(title = "Prevalence of Autism", subtitle = "with regard to parent1's age", x = "Autism", y = "Age of Parent 1", caption = "Data source: 2019-2020 combined NSCH") +
         theme(panel.background = element_blank()) +
         theme(axis.line = element_line(colour = "grey")) +
         geom_boxplot(width=0.05, color = "lightskyblue3") 
@@ -216,7 +227,7 @@ p5 <- data_recode %>%
         drop_na() %>%
         ggplot(aes(x = autism, y = parent2age)) +
         geom_violin(trim = FALSE, fill = "linen", color = "lightskyblue3") + 
-        labs(title = "Prevalence of Autism", subtitle = "with regard to parent2's age", x = "Autism", y = "Age of parent 2") +
+        labs(title = "Prevalence of Autism", subtitle = "with regard to parent2's age", x = "Autism", y = "Age of parent 2",caption = "Data source: 2019-2020 combined NSCH") +
         theme(panel.background = element_blank()) +
         theme(axis.line = element_line(colour = "grey")) +
         geom_boxplot(width=0.05, color = "lightskyblue4")
@@ -228,7 +239,7 @@ During previous literature review, we found out that parents' age are associated
 
 ### Parents' education
 
-```{r demographics: education level of parents, echo=FALSE}
+```{r demographics: education level of parents}
 
 my_table9 <- data_recode %>%
   count(adult_education, autism) %>%
@@ -246,7 +257,7 @@ p9 <- my_table9 %>%
           theme(panel.background = element_blank()) +
           theme(axis.line = element_line(colour = "grey")) +
           theme(axis.text.x = element_text(size = 6)) +
-          labs(y = "Prevalence rate of Autism (%)", x = "Adult's education", title = "Prevalence of Autism", subtitle = "with regard to Adult's highest education level") +
+          labs(y = "Prevalence rate of Autism (%)", x = "Adult's education", title = "Prevalence of Autism", subtitle = "with regard to Adult's highest education level", caption = "Data source: 2019-2020 combined NSCH") +
           geom_text(aes(x = adult_education, y = percent, label = percent), size = 2.5, vjust = 1.8, color = "lightsteelblue4")
           
 p9
@@ -256,7 +267,7 @@ For adult's education variable, it is collected as the highest education of the 
 
 ### Household Income
 
-```{r demographics: income of parents, echo=FALSE}
+```{r demographics: income of parents}
 
 my_table10 <- data_recode %>%
   count(poverty_level, autism) %>%
@@ -272,7 +283,7 @@ p10 <- my_table10 %>%
           ylab('proportion') + 
           theme(panel.background = element_blank()) +
           theme(axis.line = element_line(colour = "grey")) +
-          labs(y = "Prevalence rate of Autism (%)", x = "Household Poverty Level", title = "Prevalence of Autism", subtitle = "with regard to household poverty level") +
+          labs(y = "Prevalence rate of Autism (%)", x = "Household Poverty Level", title = "Prevalence of Autism", subtitle = "with regard to household poverty level", caption = "Data source: 2019-2020 combined NSCH") +
           geom_text(aes(x = poverty_level, y = percent, label = percent), size = 2.5, color = "lightsteelblue4")
 
 p10
@@ -284,7 +295,7 @@ Household poverty level is an ordinal variable with four categories: "400% feder
 
 ### Mental Health Service Access and Sex
 
-```{r mental health service access and sex, echo=FALSE}
+```{r mental health service access and sex}
 my_table1 <- data_recode %>%
   count(sex, needed_MHS_not_received, autism) %>%
   group_by(sex, needed_MHS_not_received) %>%
@@ -298,8 +309,10 @@ p1 <- my_table1 %>%
   scale_fill_manual("autism", values = c("Yes" = "thistle")) +
   labs(y= "Proportion of Autism (%)",
        x= "Needed Mental Health Service but not Received",
-       title= "Risk of Autism, Comparing Mental Healthcare access Across Sex", 
-       fill = "Autism Status") +
+       title= "Risk of Autism", 
+       subtitle = "Comparing Mental Healthcare access Across Sex",
+       fill = "Autism Status",
+       caption = "Data source: 2019-2020 combined NSCH") +
   geom_text(aes(x = needed_MHS_not_received, y = percent, label = percent), size = 2.5) +
   theme(panel.background = element_blank()) +
           theme(axis.line = element_line(colour = "grey"))
@@ -311,7 +324,7 @@ We now look at one of our predictor variables - Mental healthcare access status 
 
 ### Genetic and Allergy
 
-```{r genetic and allergy, echo=FALSE}
+```{r genetic and allergy}
 my_table6 <- data_recode %>%
   count(genetic, allergy, autism) %>%
   group_by(genetic, allergy) %>%
@@ -326,7 +339,9 @@ p6 <- my_table6 %>%
   scale_fill_manual("genetic", values = c("Yes" = "pink")) +
   labs(y= "Proportion of Autism (%)",
        x= "Genetic Disease Status",
-       title= "Risk of Autism, Comparing Genetic Status Across Allergy Status", 
+       title= "Risk of Autism",
+       subtitle= "Comparing Genetic Status Across Allergy Status",
+       caption = "Data source: 2019-2020 combined NSCH",
        fill = "Autism Status") +
   geom_text(aes(x = genetic, y = percent, label = percent), size = 2.5) +
   theme(panel.background = element_blank()) +
@@ -335,7 +350,122 @@ p6 <- my_table6 %>%
 p6
 ```
 
-The above graph looks at another predictor variable that we are interested in- genetic status across allergy status. We don't see much differences accross allergy status. However, for children with genetic disease, the prevalence of autism is much higher than those without genetic disease.
+The above graph looks at another predictor variable that we are interested in- genetic status across allergy status. We don't see much differences across allergy status. However, for children with genetic disease, the prevalence of autism is much higher than those without genetic disease. This is also shown in current literature [@chua_understanding_2021; @nemet_early_2022].
+
+## Statistical Analysis
+
+### Logistic Regression Analysis
+
+In the next section, we are performing logistic regression analysis with all of our variables of interest to see potential statistical significance relationship between the variables of interest and our outcome variable.
+
+```{r logistic regression}
+
+#logistic regression
+model1 <- glm(autism ~ needed_MHS_not_received + sex + age + insurance_coverage + emotional_support+ bullied+ ACE2more + genetic + allergy + race + Nsidewalk + Nplayground + parent1age + parent2age + mom_age_birth + poverty_level + adult_education, family=binomial(link="logit"), data=data_recode)
+
+ model1_tidy <-
+  tidy(model1, exponentiate = TRUE, conf.int = TRUE, conf.level = 0.95)
+    
+model1_tidy %>%
+  #tidy(exponentiate = TRUE, conf.int = TRUE, conf.level = 0.95) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(conf.int = paste0("(", round(conf.low,3), ", ", round(conf.high,3), ")"),
+         p.value = format(round(p.value, 3), nsmall = 3),
+         estimate = format(round(estimate, 3), nsmall = 3)) %>%
+  select(Term = term, OR = estimate,`p-value` = p.value, `95% CI` = conf.int) %>%
+  filter(`p-value` <= 0.05) %>%
+  mutate(Term = c("Needed Mental Health Service not Received", "Female", "Insurance covered", "Genetic Disease","Adult education: High school or GED", "Adult education: Some College or Technical School")) %>%
+  kable(digits = 3, format = "markdown", caption = "Logistic Regression Analysis")
+
+```
+
+::: column-margin
+Note: $$ Odds= \frac {case}{1-case} $$
+:::
+
+For the logistic regression, we included all of the variables that we are interested in. Holding all other variables constant, children not receiving mental health service access while needed is associated with `r round(100*(model1_tidy %>% filter(term == "needed_MHS_not_receivedYes") %>% pull(estimate)) - 100,1)`% increase in the odds of autism (p-value `r format(model1_tidy %>% filter(term=="needed_MHS_not_receivedYes") %>% pull(p.value), digits=3)`, 95% CI `r round(100*(model1_tidy %>% filter(term=="needed_MHS_not_receivedYes") %>% pull(conf.low))-100,1)`-`r round(100*(model1_tidy %>% filter(term=="needed_MHS_not_receivedYes") %>% pull(conf.high))-100,1)`%) comparing to children who received mental health service while needed.
+
+Holding all other variables constant, female children is associated with `r round(100*(model1_tidy %>% filter(term == "sexFemale") %>% pull(estimate)) - 100,1)`% increase in the odds of autism (p-value `r format(model1_tidy %>% filter(term=="sexFemale") %>% pull(p.value), digits=3)`, 95% CI `r round(100*(model1_tidy %>% filter(term=="sexFemale") %>% pull(conf.low))-100,1)`-`r round(100*(model1_tidy %>% filter(term=="sexFemale") %>% pull(conf.high))-100,1)`%) comparing to male children.
+
+Holding all other variables constant, having insurance coverage is associated with `r round(100*(model1_tidy %>% filter(term == "insurance_coverageYes") %>% pull(estimate)) - 100,1)`% increase in the odds of autism (p-value `r format(model1_tidy %>% filter(term=="insurance_coverageYes") %>% pull(p.value), digits=3)`, 95% CI `r round(100*(model1_tidy %>% filter(term=="insurance_coverageYes") %>% pull(conf.low))-100,1)`-`r round(100*(model1_tidy %>% filter(term=="insurance_coverageYes") %>% pull(conf.high))-100,1)`%) comparing to children without insurance coverage.
+
+Holding all other variables constant, having genetic disease is associated with `r round(100*(model1_tidy %>% filter(term == "geneticYes") %>% pull(estimate)) - 100,1)`% increase in the odds of autism (p-value `r format(model1_tidy %>% filter(term=="geneticYes") %>% pull(p.value), digits=3)`, 95% CI `r round(100*(model1_tidy %>% filter(term=="geneticYes") %>% pull(conf.low))-100,1)`-`r round(100*(model1_tidy %>% filter(term=="geneticYes") %>% pull(conf.high))-100,1)`%) comparing to children without having genetic disease.
+
+Although adult education: high school or GED and adult education: some college or technical school also showed statistical significant result, both confidence intervals are very wide, suggesting that the sample does not provide a precise representation of the population mean.
+
+### Logistic Regression with Sex as an Interaction Term
+
+```{r logistic regression with sex as a effect modifier}
+#association between mental health access and autism, sex as an interaction 
+
+model4 <- glm(autism ~ needed_MHS_not_received*sex +genetic + age + insurance_coverage + emotional_support+ bullied+ ACE2more + allergy, family = binomial(link="logit"), data=data_recode)
+
+model4 %>%
+  tidy(exponentiate = TRUE, conf.int = TRUE, conf.level = 0.95) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(conf.int = paste0("(", round(conf.low,3), ", ", round(conf.high,3), ")"),
+         p.value = format(round(p.value, 3), nsmall = 3),
+         estimate = format(round(estimate, 3), nsmall = 3)) %>%
+  select(Term = term, OR = estimate,`p-value` = p.value, `95% CI` = conf.int) %>%
+  filter(Term == ("needed_MHS_not_receivedYes:sexFemale")) %>%
+  mutate(Term = c("Needed MHS but not received~Female")) %>%
+  kable(digits = 3, format = "markdown", caption = "Logistic Regression with Interaction Term")
 
 
+```
 
+In the above logistic regression with interaction model, holding all else constant, the odd ratio (OR = 2.155) of the interaction term is statistically significant that falls in the 95% confidence interval (1.091, 4.374), with a p-value \< 0.05. Thus, we reject the null hypothesis and sex has a modification effect on mental healthcare access status and prevalence of autism in children.
+
+### Logistic Regression with Allergy as an Interaction Term
+
+::: callout-important
+This result is interesting and leads to my thesis: looking at the genetic variants (SNPs) in mast cell activation pathway and its association with ASD outcome in children [@theoharides_mast_nodate].
+:::
+
+```{r logistic regression with allergy as a effect modifier}
+
+#association between genetic and autism, where allergy is a effect modification
+model2 <- glm(autism ~ genetic*allergy+ age + insurance_coverage + emotional_support+ bullied+ ACE2more + allergy + sex, family = binomial(link="logit"), data=data_recode)
+
+model2 %>%
+  tidy(exponentiate = TRUE, conf.int = TRUE, conf.level = 0.95) %>%
+  filter(term != "(Intercept)") %>%
+  mutate(conf.int = paste0("(", round(conf.low,3), ", ", round(conf.high,3), ")"),
+         p.value = format(round(p.value, 3), nsmall = 3),
+         estimate = format(round(estimate, 3), nsmall = 3)) %>%
+  select(Term = term, OR = estimate,`p-value` = p.value, `95% CI` = conf.int) %>%
+  filter(Term == ("geneticYes:allergyYes")) %>%
+  mutate(Term = c("Genetic Disease~Allergy")) %>%
+  kable(digits = 3, format = "markdown", caption = "Logistic Regression with Interaction Term")
+
+
+```
+
+In the above logistic regression with interaction model, holding all else constant, the odd ratio (OR = 0.666) of the interaction term is statistically significant that falls in the 95% confidence interval (0.531, 0.835), with a p-value \< 0.05. Thus, we reject the null hypothesis and allergy has a modification effect on genetic disease status and prevalence of autism in children.
+
+## Conclusion
+
+The question we are interested in is what are some factors that are associated with autism in children aged 0-17 years. In this report, we first looked at data displays of some demographic variables. We found out that sex and household income level showed specific trends that we might want to further discover. Then, we looked at data displays of our predictor variables and outcome variables. Last, we conducted logistic regressions with all of the variables and found out that mental health service access, sex, insurance status, and genetics are the four variables that showed statistically significant results. We further performed two logistic regressions with interaction terms. The results showed that sex is an effect modifier of the association between mental health service access and prevalence of autism, and allergy is an effect modifier of the association between genetic disease status and prevalence of autism.
+
+## Packages and Functions
+
+From the *dplyr* package, I used:
+
+1.  group_by()
+2.  mutate()
+3.  filter()
+4.  select()
+5.  count()
+6.  drop_na()
+
+From the *ggplot2* package, I used:
+
+1.  geom_bar()
+2.  geom_text()
+3.  geom_line()
+4.  geom_point()
+5.  goem_violin()
+6.  geom_segment()
+7.  geom_boxplot()
+
+# References

@@ -8,8 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-      - example_analysis.qmd
+      - href: about.qmd
+        text: About
+      - href: example_analysis.qmd
+        text: Example Analysis
 
 format:
   html:
@@ -18,4 +20,5 @@ format:
     toc: true
 
 editor: visual
+bibliography: reference1.bib
 
