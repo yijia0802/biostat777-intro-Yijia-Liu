@@ -74,6 +74,6 @@
     "href": "example_analysis.html#packages-and-functions",
     "title": "Example Analysis",
     "section": "Packages and Functions",
-    "text": "Packages and Functions\nFrom the dplyr package, I used:\n\ngroup_by()\nmutate()\nfilter()\nselect()\ncount()\ndrop_na()\n\nFrom the ggplot2 package, I used:\n\ngeom_bar()\ngeom_text()\ngeom_line()\ngeom_point()\ngoem_violin()\ngeom_segment()\ngeom_boxplot()"
+    "text": "Packages and Functions\nFrom the dplyr package, I used:\n\ngroup_by()\nmutate()\nfilter()\nselect()\ncount()\ndrop_na()\n\nFrom the ggplot2 package, I used:\n\ngeom_bar()\ngeom_text()\ngeom_line()\ngeom_point()\ngoem_violin()\ngeom_segment()\ngeom_boxplot()\nfacet_wrap()"
   }
 ]
